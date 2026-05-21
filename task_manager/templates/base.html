@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% if session.get('user_id') %}
+    <div class="sidebar">
+        <h2>TaskApp</h2>
+        {% if session.get('user_role') == 'Admin' %}
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('create_user') }}">Manage Users</a>
+            <a href="{{ url_for('manage_tasks') }}">Manage Tasks</a>
+        {% else %}
+            <a href="{{ url_for('user_dashboard') }}">My Dashboard</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" style="margin-top: auto;">Logout</a>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div>Welcome, <strong>{{ session.get('username') }}</strong></div>
+            <div>Role: {{ session.get('user_role') }}</div>
+        </div>
+        
+        <div class="content">
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% else %}
+        {% block login_content %}{% endblock %}
+    {% endif %}
+</body>
+</html>

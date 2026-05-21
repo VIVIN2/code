@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>User Dashboard</h2>
+<div class="dashboard-cards" style="margin-top: 20px;">
+    <div class="card">
+        <h3>Total Assigned</h3>
+        <p>{{ my_tasks|length }}</p>
+    </div>
+    <div class="card">
+        <h3>In Progress</h3>
+        <p>{{ in_progress_tasks }}</p>
+    </div>
+    <div class="card">
+        <h3>Completed</h3>
+        <p>{{ completed_tasks }}</p>
+    </div>
+    <div class="card">
+        <h3>Pending</h3>
+        <p>{{ pending_tasks }}</p>
+    </div>
+</div>
+
+<h3 style="margin-top: 30px; margin-bottom: 15px;">My Tasks</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in my_tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.description }}</td>
+            <td><span class="badge priority-{{ task.priority }}">{{ task.priority }}</span></td>
+            <td>{{ task.deadline }}</td>
+            <td><span class="badge status-{{ task.status.replace(' ', '-') }}">{{ task.status }}</span></td>
+            <td>
+                <form action="{{ url_for('update_task_status', id=task.id) }}" method="POST" style="display:flex; gap:10px;">
+                    <select name="status" class="form-group" style="margin:0; padding:5px;">
+                        <option value="Pending" {% if task.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                    <button type="submit" class="btn btn-small">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if not my_tasks %}
+        <tr><td colspan="6" style="text-align: center;">No tasks assigned.</td></tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<div class="dashboard-cards" style="margin-top: 20px;">
+    <div class="card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+    <div class="card">
+        <h3>Total Tasks</h3>
+        <p>{{ total_tasks }}</p>
+    </div>
+    <div class="card">
+        <h3>Completed Tasks</h3>
+        <p>{{ completed_tasks }}</p>
+    </div>
+    <div class="card">
+        <h3>Pending Tasks</h3>
+        <p>{{ pending_tasks }}</p>
+    </div>
+</div>
+{% endblock %}

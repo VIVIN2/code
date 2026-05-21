@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Assign New Task</h2>
+
+<div class="panel" style="margin-top: 20px; max-width: 800px;">
+    <form action="{{ url_for('assign_task') }}" method="POST">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" name="title" required>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="3"></textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; align-items: end;">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Assign To</label>
+                <select name="assigned_to" required>
+                    <option value="" disabled selected>Select User</option>
+                    {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Priority</label>
+                <select name="priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>Deadline</label>
+                <input type="date" name="deadline">
+            </div>
+            </div>
+        </div>
+        <button type="submit" class="btn" style="margin-top: 15px;">Assign Task</button>
+    </form>
+</div>
+{% endblock %}
